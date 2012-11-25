@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 31, 2012 10:27:16 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.jumbalakka.nobs.type.NobsAuditLog" table="NOBS_LOG" >
+		<id name="id">
+			<generator class="identity" />
+		</id>
+		<property name="createDate">
+			<column name="CREATE_DATE" />
+		</property>
+		<property name="userId" type="java.lang.String">
+			<column length="255" name="USER_ID" />
+		</property>
+		<property name="userName" type="java.lang.String">
+			<column length="255" name="USER_NAME" />
+		</property>
+		<property name="message" type="java.lang.String">
+			<column length="255" name="MSG_LOG" />
+		</property>
+		<property name="type" type="java.lang.String">
+			<column length="255" name="MSG_TYPE" />
+		</property>
+		<property name="app" type="java.lang.String">
+			<column length="255" name="MSG_APP" />
+		</property>
+		<property name="reference" type="java.lang.String">
+			<column length="255" name="AUDIT_REF" />
+		</property>
+	</class>
+</hibernate-mapping>

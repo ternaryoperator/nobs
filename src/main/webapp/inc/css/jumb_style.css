@@ -1,0 +1,28 @@
+.jumb-center-text
+{
+	text-align: center;
+}
+.jumb-left-text
+{
+	text-align: left;
+}
+.jumb-right-text
+{
+	text-align: right;
+}
+.jmberrorMsg,.jumbUserValidationErrorMsg
+{
+	color: red;
+}
+.jmbinfoMsg
+{
+	color: blue;
+}
+body{
+	height: 100%;
+}
+
+.fill-height { 
+	min-height: 100%;
+    height: 100%;
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 31, 2012 10:27:16 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.jumbalakka.nobs.type" >
+	<class name="NobsBillHeader" table="NOBS_BILL_HDR">
+		<id name="id" column="ID">
+			<generator class="identity" />
+		</id>
+		
+		<property name="title" type="java.lang.String">
+			<column length="255" name="BILL_TITLE" />
+		</property>
+		<property name="description" type="java.lang.String">
+			<column length="300" name="BILL_DESC" />
+		</property>
+		<property name="dateCreated">
+			<column name="BILL_DATE_CREATED" />
+		</property>
+	</class>
+	<class name="NobsBillLine" table="NOBS_BILL_LINE" >
+		<id name="id" column="ID">
+			<generator class="identity" />
+		</id>
+		<property name="dateCreated">
+			<column name="BILL_LINE_DATE_CREATED" />
+		</property>
+		<property name="title" type="java.lang.String">
+			<column length="255" name="NOBS_LINE_TITLE" />
+		</property>
+		<property name="description" type="java.lang.String">
+			<column length="255" name="NOBS_LINE_DESC" />
+		</property>
+		<property name="cost">
+			<column name="NOBS_LINE_AMT" />
+		</property>
+		<many-to-one name="payee" column="NOBS_LINE_PAYEE" class="NobsUser" />
+		<many-to-one name="header" column="NOBS_HDR_REF" class="NobsBillHeader" />
+	</class>
+	
+	<class name="NobsLinePayers" table="NOBS_BILL_LINE_PAYERS" >
+		<composite-id>
+			<key-many-to-one name="billLine" class="NobsBillLine" column="BILL_LINE_REF" />
+			<key-many-to-one name="payer" class="NobsUser" column="USER_PAYER" />
+		</composite-id>
+		<property name="pays">
+			<column name="USER_PAYS_AMT" />
+		</property>
+	</class>
+</hibernate-mapping>

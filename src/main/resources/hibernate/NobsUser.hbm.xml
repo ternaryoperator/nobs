@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 31, 2012 10:27:16 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.jumbalakka.nobs.type.NobsUser" table="NOBS_USER">
+		<id name="userid" type="java.lang.String">
+			<column length="255" name="NOBS_USERID" not-null="true" />
+		</id>
+		<property name="password" type="java.lang.String">
+			<column length="255" name="NOBS_PASSWORD" />
+		</property>
+		<property name="userName" type="java.lang.String">
+			<column length="300" name="NOBS_USERNAME" />
+		</property>
+		<property name="status" type="java.lang.String">
+			<column length="15" name="NOBS_STATUS" />
+		</property>
+	</class>
+	
+	<class name="com.jumbalakka.nobs.type.NobsGroup" table="NOBS_GROUP" >
+		<id name="id" column="ID">
+			<generator class="identity" />
+		</id>
+		<many-to-one name="groupCreator" column="GROUP_CREATOR" />
+		<property name="groupName" type="java.lang.String">
+			<column length="255" name="NOBS_GROUPNAME" />
+		</property>
+		<property name="description" type="java.lang.String">
+			<column length="255" name="NOBS_GROUPDESC" />
+		</property>
+	</class>
+	
+	<class name="com.jumbalakka.nobs.type.NobsUsersGroup" table="NOBS_USERS_GROUP" >
+		<composite-id>
+			<key-many-to-one name="user"  class="com.jumbalakka.nobs.type.NobsUser" column="GROUP_USER_ID" />
+			<key-many-to-one name="group" class="com.jumbalakka.nobs.type.NobsGroup" column="GROUP_ID" />
+		</composite-id>
+	</class>
+</hibernate-mapping>
