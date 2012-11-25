@@ -2,7 +2,6 @@ package com.jumbalakka.nobs.web.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.jumbalakka.commons.config.JumbalakkaPropertyPlaceHolderConfigure;
@@ -14,6 +13,7 @@ import com.jumbalakka.nobs.type.NobsUser;
 
 public class LoginServlet extends JumbalakkaAbstractServlet
 {
+	private static final String	SUCCESS_PAGE	= "jwr?E=jq.nobs";
 	public static final String	LOGONPAGE	= "index.jsp";
 	public static String SESSION_VAR_USER = 
 			JumbalakkaPropertyPlaceHolderConfigure.getPropertyValue( "session.user", "user" );
@@ -49,6 +49,6 @@ public class LoginServlet extends JumbalakkaAbstractServlet
 				return;
 			}
 		}
-		doRedirect( resp, "nobs/index.jsp" );
+		doRedirect( resp, SUCCESS_PAGE );
 	}
 }
