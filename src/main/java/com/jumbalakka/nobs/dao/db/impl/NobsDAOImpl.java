@@ -27,6 +27,8 @@ import com.jumbalakka.nobs.type.NobsUsersGroup;
 
 public class NobsDAOImpl extends HibernateDaoSupport implements NobsDAO
 {
+	private static final String	PROP_DEFAULT_VALUE_SUPER	= "SUPER";
+	private static final String	PROP_NOBS_SUPERUSER_FUNCTION	= "nobs.superuser.function";
 	TupleDAO tupleDAO;
 	
 	
@@ -195,6 +197,44 @@ public class NobsDAOImpl extends HibernateDaoSupport implements NobsDAO
 		}
 	}
 	
+	public boolean isAuthorized( NobsUser user, String function ) throws NobsException
+	{
+		if( user == null )
+		{
+			throw new NobsException( "User has to be logged on first." );
+		}
+		String superUserFunction = 
+				JumbalakkaPropertyPlaceHolderConfigure
+					.getPropertyValue( PROP_NOBS_SUPERUSER_FUNCTION, PROP_DEFAULT_VALUE_SUPER );
+		
+		if( user.getUserFunctions().contains( superUserFunction ) )
+		{
+			return true;
+		}
+		return user.getUserFunctions().contains( function );
+	}
+	
+	public void loadFunctions( NobsUser user ) throws NobsException
+	{
+		//check if admin then load super
+		String defaultSuperUser = 
+				JumbalakkaPropertyPlaceHolderConfigure.getPropertyValue( "onetime.admin.user", "admin" );
+		if( StringUtils.equals( defaultSuperUser, user.getUserid() ) )
+		{
+			String superUserFunction = 
+					JumbalakkaPropertyPlaceHolderConfigure
+						.getPropertyValue( PROP_NOBS_SUPERUSER_FUNCTION, PROP_DEFAULT_VALUE_SUPER );
+			user.getUserFunctions().add( superUserFunction );
+		}
+		
+		List<Tuple> tuples = 
+				tupleDAO.getByFilter( user.getUserid(), "JUMB.ALLOWED.FUNCTIONS" );
+		for( Tuple tuple: tuples )
+		{
+			user.getUserFunctions().add( tuple.getValue() );
+		}
+	}
+	
 	public NobsUser getUser( String userId ) throws NobsException
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass( NobsUser.class );
@@ -337,6 +377,24 @@ public class NobsDAOImpl extends HibernateDaoSupport implements NobsDAO
 			payer.setPays( dividedCost );
 			getHibernateTemplate().save( payer );
 		}
+	}
+
+	public List<NobsUser> getAllUsers()
+	{
+		DetachedCriteria criteria = DetachedCriteria.forClass( NobsUser.class );
+		return getHibernateTemplate().findByCriteria( criteria );
+	}
+
+	public void deleteUser( NobsUser user )
+	{
+		getHibernateTemplate().delete( user );
+	}
+
+	public void addUser( NobsUser user, String password )
+	{
+		user.setPassword( JumbalakkaSecurityUtils.
+					encryptPassword( password  ) );
+		getHibernateTemplate().save( user );
 	}
 	
 }

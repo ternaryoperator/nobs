@@ -1,7 +1,9 @@
 package com.jumbalakka.nobs.type;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import com.jumbalakka.commons.types.JumbalakkaObject;
 
 public class NobsUser extends JumbalakkaObject
@@ -11,12 +13,22 @@ public class NobsUser extends JumbalakkaObject
 	String userName;
 	String status;
 	List< NobsUsersGroup > groups = new ArrayList< NobsUsersGroup >();
+	Set<String> userFunctions = new HashSet< String >();
+	
 	
 	public enum USERSTATUS
 	{
 		ACTIVE, INACTIVE;
 	}
 	
+	public Set< String > getUserFunctions()
+	{
+		return userFunctions;
+	}
+	public void setUserFunctions( Set< String > userFunctions )
+	{
+		this.userFunctions = userFunctions;
+	}
 	public String getStatus()
 	{
 		return status;

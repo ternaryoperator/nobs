@@ -1,9 +1,7 @@
 package com.jumbalakka.nobs.type;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import com.jumbalakka.commons.types.JumbalakkaObject;
 
 public class NobsGroup extends JumbalakkaObject

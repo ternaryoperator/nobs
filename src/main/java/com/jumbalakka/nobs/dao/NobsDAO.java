@@ -25,6 +25,10 @@ public interface NobsDAO
 	
 	public void updateUser( NobsUser user );
 	
+	public boolean isAuthorized( NobsUser user, String function ) throws NobsException;
+	
+	public void loadFunctions( NobsUser user ) throws NobsException;
+	
 	public NobsUser getUser( String userId ) throws NobsException;
 	
 	public void logInfo( NobsUser user, String ref, String app, String message );
@@ -48,4 +52,10 @@ public interface NobsDAO
 	public void authUser( String uname, String password ) throws NobsException;
 	
 	public List<Tuple> getAllAuthroizedFriend( NobsUser user );
+	
+	public List<NobsUser> getAllUsers();
+	
+	public void deleteUser( NobsUser user );
+	
+	public void addUser( NobsUser user, String password );
 }

@@ -53,4 +53,14 @@
 		<name>paymentTag</name>
 		<tag-class>com.jumbalakka.nobs.web.tag.BillPaymentTag</tag-class>
 	</tag>
+	
+	<tag>
+		<name>functionCheck</name>
+		<tag-class>com.jumbalakka.nobs.web.tag.UserFunctionCheck</tag-class>
+		<attribute>
+			<name>functionId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>            

@@ -126,6 +126,13 @@
 						</ul>
 						<div id="my-tab-content" class="tab-content">
 							<div class="tab-pane active" id="summary">
+								<nobs:functionCheck functionId="SUPER">
+									<button class="btn btn-small btn-inverse" 
+										type="button" 
+										onClick="window.location='${pageContext.request.contextPath}/jwr?E=jq.admin'">
+											ADMIN
+									</button>
+								</nobs:functionCheck>
 								<div style="margin-left: 95%">
 									<button class="btn btn-small btn-inverse" type="button" onClick="goHome();">Refresh</button>
 								</div>
