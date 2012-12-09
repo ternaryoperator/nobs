@@ -238,6 +238,12 @@ public class NobsDAOImpl extends HibernateDaoSupport implements NobsDAO
 		}
 	}
 	
+	public List<NobsAuditLog> getAllLog()
+	{
+		DetachedCriteria criteria = DetachedCriteria.forClass( NobsAuditLog.class );
+		return getHibernateTemplate().findByCriteria( criteria );
+	}
+	
 	public NobsUser getUser( String userId ) throws NobsException
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass( NobsUser.class );
@@ -351,7 +357,7 @@ public class NobsDAOImpl extends HibernateDaoSupport implements NobsDAO
 		return tupleDAO.getByType( type ) ;
 	}
 	
-	public void addNewBill( NobsUser reporter, String title, String desc, double cost, List< NobsUser > payee )
+	public NobsBillLine addNewBill( NobsUser reporter, String title, String desc, double cost, List< NobsUser > payee )
 	{
 		NobsBillHeader hdr = new NobsBillHeader();
 		hdr.setDateCreated( new Date() );
@@ -380,6 +386,7 @@ public class NobsDAOImpl extends HibernateDaoSupport implements NobsDAO
 			payer.setPays( dividedCost );
 			getHibernateTemplate().save( payer );
 		}
+		return line;
 	}
 
 	public List<NobsUser> getAllUsers()

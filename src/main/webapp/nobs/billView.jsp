@@ -1,3 +1,4 @@
+<%@page import="com.jumbalakka.nobs.exception.NobsException"%>
 <%@page import="com.jumbalakka.nobs.type.NobsLinePayers"%>
 <%@page import="com.jumbalakka.nobs.type.NobsBillLine"%>
 <%@page import="com.jumbalakka.nobs.type.NobsBillHeader"%>
@@ -41,8 +42,20 @@
 					<c:choose>
 						<c:when test="${param['E'] == 'jq.bill.delete' }">
 							<%
-								nobsDAO.deleteBillLine( NumberUtils.toInt( request.getParameter( "deleteId" ), 0 ) );
-								request.setAttribute( "infoMsg", "Functionality yet to be implemented!" );
+								NobsQueryImpl nobsQueryDAO = SpringContextUtils.getBean( "queryNobsDAO", NobsQueryImpl.class );
+								NobsUser currentUser = (NobsUser) session.getAttribute( "user" );
+								try{
+									nobsQueryDAO.deleteBillLine( currentUser, NumberUtils.toInt( request.getParameter( "deleteId" ), 0 ) );
+									nobsDAO.logInfo( currentUser, 
+											request.getParameter( "deleteId" ), 
+											"BDEL", 
+											request.getParameter( "delTitle" ) + ", Cost: " + request.getParameter( "delCost" ) );
+									request.setAttribute( "infoMsg", "Deleted bill!" );
+								}catch( NobsException e )
+								{
+									request.setAttribute( "errorMsg", e.getMessage() );
+								}
+								
 							%>
 							<jumbCommons:userFeedback />
 						</c:when>
@@ -50,6 +63,8 @@
 							<form action="${pageContext.request.contextPath}/jwr" id="newbill" method="post">
 								<input type="hidden" id="E" name="E" value="jq.bill.delete" />
 								<input type='hidden' name='deleteId' value="${billPayerse[0].billLine.id}" />
+								<input type='hidden' name='delTitle' value="${billPayerse[0].billLine.title}" />
+								<input type='hidden' name='delCost' value="${billPayerse[0].billLine.cost}" />
 								<fieldset>
 								<legend>Report a bill</legend>
 								<label>Title</label>

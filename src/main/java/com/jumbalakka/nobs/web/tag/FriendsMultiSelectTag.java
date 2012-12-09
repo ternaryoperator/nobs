@@ -18,7 +18,18 @@ public class FriendsMultiSelectTag extends JumbalakkaAbstractTag
 	String styleClass;
 	String compField;
 	List< NobsLinePayers > payers;
+	boolean multiSelect = true;
 	
+	public boolean isMultiSelect()
+	{
+		return multiSelect;
+	}
+
+	public void setMultiSelect( boolean multiSelect )
+	{
+		this.multiSelect = multiSelect;
+	}
+
 	public String getCompField()
 	{
 		return compField;
@@ -87,8 +98,15 @@ public class FriendsMultiSelectTag extends JumbalakkaAbstractTag
 		buffer.append( "<select name='").append( compName ).append( "' " )
 			.append( "id='" ).append( compId ).append( "' " )
 			.append( "class='" ).append( styleClass ).append( "' " )
-			.append( "data-field-name='" ).append( compField ).append( "' " )
-			.append( "multiple>" );
+			.append( "data-field-name='" ).append( compField ).append( "' " );
+		if( multiSelect )
+		{
+			buffer.append( "multiple>" );
+		}
+		else
+		{
+			buffer.append( ">" );
+		}
 		for( Tuple t: tuples )
 		{
 			//<option value='adsd'>value</option>

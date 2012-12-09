@@ -42,7 +42,7 @@ public class LoginServlet extends JumbalakkaAbstractServlet
 				dao.loadFunctions( user );
 				setSessionAttribute( req.getSession(), SESSION_VAR_USER, user );
 				req.getSession().setMaxInactiveInterval( 360*6 );
-				dao.logInfo( user, user.getUserid(), "LOGON", "User Logged In!" );
+				dao.logInfo( user, req.getRemoteAddr(), "LOGON", "User Logged In!" );
 			}catch( NobsException e )
 			{
 				setErrorMessage( req, e.getMessage() );

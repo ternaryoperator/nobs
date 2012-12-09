@@ -192,6 +192,9 @@
 								    <label>Cost</label>
 								    <input type="text" name="cost" class="jumbRequiredField jumbCheckForPositveFloat" 
 								    	data-field-name='Cost' value="${param['cost'] }" placeholder="0"><br/>
+								    <label>Select a Payer</label>
+								    <nobs:friendsMultiSelectTag compName="payer" compId="payer"
+								    	styleClass="jumbRequiredField" compField="Payer" multiSelect="false" /><br/>
 								    <label>Split Between <span class="label label-important">Include yourself if you where in contribution</span></label>
 								    <nobs:friendsMultiSelectTag compName="splitBetween" compId="splitBetween"
 								    	styleClass="jumbRequiredField" compField="Split Between" /><br/>

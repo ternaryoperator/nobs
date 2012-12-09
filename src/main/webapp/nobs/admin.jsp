@@ -149,12 +149,15 @@
 							List<NobsUser> nobsUser = nobsDAO.getAllUsers();
 							request.setAttribute( "allUsers", nobsUser );
 							
+							request.setAttribute( "allAuditEntry", nobsDAO.getAllLog() );
+							
 						%>
 						<jumbCommons:userFeedback />
 						<div id="tabs" class="container fill-height">
 							<ul class="nav nav-tabs" data-tabs="tabs">
 								<li class="active"><a href="#appConfig" data-toggle="tab">App Config</a></li>
 								<li><a href="#userConfig" data-toggle="tab">User Configuration</a></li>
+								<li><a href="#auditLog" data-toggle="tab">Audit Log</a></li>
 							</ul>
 							<div id="my-tab-content" class="tab-content">
 								<div class="tab-pane active" id="appConfig">
@@ -233,6 +236,17 @@
 								    		<button type="submit" class="btn jumbSubmit btn-primary">Save</button>
 								    	</fieldset>
 									</form>
+								</div>
+								<div class="tab-pane" id="auditLog">
+									<display:table name="allAuditEntry" id="allAudit" class="table table-striped" >
+										<display:column property="createDate" title="USERID" sortable="true"/>
+										<display:column property="userId" title="USERID" sortable="true"/>
+										<display:column property="userName" title="USER" sortable="true"/>
+										<display:column property="type" title="TYPE" sortable="true"/>
+										<display:column property="app" title="APP" sortable="true"/>
+										<display:column property="message" title="MSG" sortable="true"/>
+										<display:column property="reference" title="REF" sortable="true"/>	
+									</display:table>
 								</div>
 							</div>
 						</div>

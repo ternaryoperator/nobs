@@ -7,6 +7,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import com.jumbalakka.nobs.exception.NobsException;
+import com.jumbalakka.nobs.type.NobsBillLine;
+import com.jumbalakka.nobs.type.NobsLinePayers;
 import com.jumbalakka.nobs.type.NobsResult;
 import com.jumbalakka.nobs.type.NobsUser;
 
@@ -117,6 +120,39 @@ public class NobsQueryImpl extends JdbcTemplate
 		return query( sql, new Object[]{ user.getUserid(), user.getUserid() }, new NobsResultMapper() );
 	}
 	
+	public void deleteBillLine( NobsUser currentUser, int lineId ) throws NobsException
+	{
+		String sql;
+		sql = "select count(*) from NOBS_BILL_LINE where ID = ? AND NOBS_LINE_PAYEE= ?";
+		List<Integer> result = query( sql, new Object[]{ lineId, currentUser.getUserid() }, new NobsCount1() );
+		if( result.isEmpty() == false )
+		{
+			sql = "delete from NOBS_BILL_LINE_PAYERS where BILL_LINE_REF = ?";
+			update( sql, new Object[]{ lineId } );
+			sql = "select NOBS_HDR_REF  from NOBS_BILL_LINE where ID = ?";
+			result = query( sql, new Object[]{ lineId }, new NobsCount1() );
+			sql = "delete from NOBS_BILL_LINE where ID = ?";
+			update( sql, new Object[]{ lineId } );
+			for( Integer idToDel: result )
+			{
+				sql = "delete from NOBS_BILL_HDR where ID =?";
+				update( sql, new Object[]{ idToDel } );
+			}
+			
+		}
+		else
+		{
+			throw new NobsException( "Only owner can delete" );
+		}
+	}
+	
+	public class NobsCount1 implements RowMapper
+	{
+		public Object mapRow( ResultSet rs, int rowNum ) throws SQLException
+		{
+			return rs.getInt( 1 );
+		}
+	}
 	public class NobsSummatorMapper implements RowMapper
 	{
 		public Object mapRow( ResultSet rs, int rowNum ) throws SQLException

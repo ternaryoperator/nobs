@@ -3,6 +3,7 @@ package com.jumbalakka.nobs.dao;
 import java.util.List;
 import com.jumbalakka.commons.config.type.Tuple;
 import com.jumbalakka.nobs.exception.NobsException;
+import com.jumbalakka.nobs.type.NobsAuditLog;
 import com.jumbalakka.nobs.type.NobsBillHeader;
 import com.jumbalakka.nobs.type.NobsBillLine;
 import com.jumbalakka.nobs.type.NobsLinePayers;
@@ -20,7 +21,9 @@ public interface NobsDAO
 	public List< NobsResult > getYouOwe( NobsUser user, int firstResult,
 			int maxResult );
 	*/
-	public void addNewBill( NobsUser reporter, String title, String desc, double cost, List< NobsUser > payee );
+	public List<NobsAuditLog> getAllLog();
+	
+	public NobsBillLine addNewBill( NobsUser reporter, String title, String desc, double cost, List< NobsUser > payee );
 	
 	public String getValidPasswordPassword( String newPassword ) throws NobsException;
 	
