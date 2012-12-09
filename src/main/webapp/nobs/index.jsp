@@ -34,6 +34,11 @@
 				%>
 				<script>
 					$(document).ready(function(){
+						$( '.moreInfoClick' ).click(function(e){
+							e.preventDefault();
+							var key = $(this).attr('data-key');
+							window.location='${pageContext.request.contextPath}/jwr?E=jq.bill.view&id=' + key;
+						});
 						<%
 							List<NobsResult> mapResult = dao.getFriendsPay( user );
 							request.setAttribute( "friend_pays", mapResult );
@@ -160,8 +165,10 @@
 											</display:table>
 										</div>
 										<div class="tab-pane" id="detail_list">
-											<display:table name="result_data" class="table table-striped" >
-												<display:column property="title" title="TITLE" sortable="true"/>
+											<display:table id="result_data1" name="result_data" class="table table-striped" >
+												<display:column title="TITLE" sortable="true">
+													<a data-key='${result_data1.id}' class='moreInfoClick'>${result_data1.title}</a>
+												</display:column>
 												<display:column property="description" title="DESC" sortable="true"/>
 												<display:column property="dateCreated" format="{0,date,MM/dd/yyyy}" sortable="true"/>
 											    <display:column property="cost" format="{0,number,#,#00.00}" sortable="true"/>

@@ -3,6 +3,9 @@ package com.jumbalakka.nobs.dao;
 import java.util.List;
 import com.jumbalakka.commons.config.type.Tuple;
 import com.jumbalakka.nobs.exception.NobsException;
+import com.jumbalakka.nobs.type.NobsBillHeader;
+import com.jumbalakka.nobs.type.NobsBillLine;
+import com.jumbalakka.nobs.type.NobsLinePayers;
 import com.jumbalakka.nobs.type.NobsResult;
 import com.jumbalakka.nobs.type.NobsUser;
 
@@ -58,4 +61,9 @@ public interface NobsDAO
 	public void deleteUser( NobsUser user );
 	
 	public void addUser( NobsUser user, String password );
+	
+	public List<NobsLinePayers> getMatchingHeaders( int lineId );
+	
+	public void deleteBillLine( int lineId );
+	
 }

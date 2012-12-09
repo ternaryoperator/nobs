@@ -2,11 +2,14 @@ package com.jumbalakka.nobs.dao.db.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -395,6 +398,48 @@ public class NobsDAOImpl extends HibernateDaoSupport implements NobsDAO
 		user.setPassword( JumbalakkaSecurityUtils.
 					encryptPassword( password  ) );
 		getHibernateTemplate().save( user );
+	}
+
+	public List< NobsLinePayers > getMatchingHeaders( int lineId )
+	{
+		Criteria criteria = getSession().createCriteria( NobsLinePayers.class );
+		
+		criteria.add( Restrictions.eq( "billLine.id", lineId ) );
+		
+		List< NobsLinePayers > tempResult = criteria.list();
+		
+		for( NobsLinePayers result: tempResult )
+		{
+			result.getBillLine();
+			result.getPayer();
+		}
+		
+		return tempResult;
+	}
+
+	public void deleteBillLine( int lineId )
+	{	
+		/*
+		Session session = getSession();
+		Criteria criteria = session.createCriteria( NobsBillLine.class );
+		criteria.add( Restrictions.eq( "id", lineId ) );
+		NobsBillLine billLine = (NobsBillLine) criteria.uniqueResult();
+		if( billLine != null )
+		{
+			NobsBillHeader hdr = billLine.getHeader();
+			criteria = session.createCriteria( NobsLinePayers.class );
+			criteria.add( Restrictions.eq( "billLine.id", lineId ) );
+			List< NobsLinePayers > payers = criteria.list();
+			Iterator< NobsLinePayers > itrPayers = payers.iterator();
+			NobsLinePayers tempPayer;
+			while( itrPayers.hasNext() )
+			{
+				tempPayer = itrPayers.next();
+				session.delete( tempPayer.getBillLine() );
+				session.delete( tempPayer.getBillLine().getHeader() );
+				session.delete( tempPayer );
+			}
+		}*/
 	}
 	
 }
