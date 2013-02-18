@@ -57,8 +57,9 @@ public class NobsQueryImpl extends JdbcTemplate
 	
 	public List<NobsResult> getAllResult( NobsUser user, int firstResult, int maxResult )
 	{
+		int lastResult = firstResult + maxResult;
 		String sql = ""			//FRIENDS PAY
-				+ "SELECT Count(*), "
+				+ "(SELECT Count(*), "
 				+ "       l.nobs_line_title, "
 				+ "       l.nobs_line_desc, "
 				+ "       l.bill_line_date_created, "
@@ -87,8 +88,9 @@ public class NobsQueryImpl extends JdbcTemplate
 				+ "       	 u.nobs_userid, "
 				+ "       	 l.id, "
 				+ "          '1' "
+				+ "ORDER BY l.bill_line_date_created DESC LIMIT " + firstResult + "," + lastResult + ") "
 				+ "UNION "			//OWE
-				+ "SELECT Count(*), "					//1
+				+ "(SELECT Count(*), "					//1
 				+ "       l.nobs_line_title, "			//2
 				+ "       l.nobs_line_desc, "			//3
 				+ "       l.bill_line_date_created, "	//4
@@ -116,7 +118,8 @@ public class NobsQueryImpl extends JdbcTemplate
 				+ "          u1.nobs_userid, "
 				+ "       	 u.nobs_userid, "
 				+ "       	 l.id, "
-				+ "          '2' ";
+				+ "          '2' "
+				+ "ORDER BY l.bill_line_date_created DESC LIMIT " + firstResult + "," + lastResult + ") ";
 		return query( sql, new Object[]{ user.getUserid(), user.getUserid() }, new NobsResultMapper() );
 	}
 	

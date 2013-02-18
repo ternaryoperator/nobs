@@ -30,7 +30,7 @@
 					NobsUser user = 
 						(NobsUser) request.getSession().getAttribute( LoginServlet.SESSION_VAR_USER );
 					NobsQueryImpl dao = SpringContextUtils.getBean( "queryNobsDAO", NobsQueryImpl.class );
-					request.setAttribute( "result_data", dao.getAllResult( user, 0, 1000 ) );
+					request.setAttribute( "result_data", dao.getAllResult( user, 0, 100 ) );
 				%>
 				<script>
 					$(document).ready(function(){
@@ -182,26 +182,53 @@
 							<div class="tab-pane" id="addnew">
 								<form action="${pageContext.request.contextPath}/jwr" id="newbill" method="post">
 								  <input type="hidden" id="E" name="E" value="jq.new.bill" />
-								  <fieldset>
-								    <legend>Report a bill</legend>
-								    <label>Title</label>
-								    <input type="text" name="title" class="jumbRequiredField" 
-								    	data-field-name='Title' value="${param['title'] }" placeholder="Title ..."><br/>
-								    <label>Description</label>
-								    <textarea name="description" placeholder="Description ..."><c:if test="${not empty param['description'] }">${param['description'] }</c:if></textarea><br/>
-								    <label>Cost</label>
-								    <input type="text" name="cost" class="jumbRequiredField jumbCheckForPositveFloat" 
-								    	data-field-name='Cost' value="${param['cost'] }" placeholder="0"><br/>
-								    <label>Select a Payer</label>
-								    <nobs:friendsMultiSelectTag compName="payer" compId="payer"
-								    	styleClass="jumbRequiredField" compField="Payer" multiSelect="false" /><br/>
-								    <label>Split Between <span class="label label-important">Include yourself if you where in contribution</span></label>
-								    <nobs:friendsMultiSelectTag compName="splitBetween" compId="splitBetween"
-								    	styleClass="jumbRequiredField" compField="Split Between" /><br/>
-								    <span class="label label-info">Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.</span><br/>
-								    <button type="submit" data-jumb-formId='newbill' class="btn jumbSubmit btn-primary">Save</button>
-								    <button type="button" class="btn" onclick="goHome();" >Cancel</button>
-								  </fieldset>
+								  <c:choose>
+								  	<c:when test="${empty requestScope.errorMsg && param['E'] == 'jq.new.bill' }">
+								  		<fieldset>
+										    <legend>Report a bill</legend>
+										    <label>Title</label>
+										    <input type="text" name="title" class="jumbRequiredField" 
+										    	data-field-name='Title' placeholder="Title ..."><br/>
+										    <label>Description</label>
+										    <textarea name="description" placeholder="Description ..."></textarea><br/>
+										    <label>Cost</label>
+										    <input type="text" name="cost" class="jumbRequiredField jumbCheckForPositveFloat" 
+										    	data-field-name='Cost' placeholder="0"><br/>
+										    <label>Select a Payer</label>
+										    <nobs:friendsMultiSelectTag compName="payer" compId="payer"
+										    	styleClass="jumbRequiredField" compField="Payer" multiSelect="false" /><br/>
+										    <label>Split Between <span class="label label-important">Include yourself if you where in contribution</span></label>
+										    <nobs:friendsMultiSelectTag compName="splitBetween" compId="splitBetween"
+										    	styleClass="jumbRequiredField" compField="Split Between" /><br/>
+										    <span class="label label-info">Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.</span><br/>
+										    <button type="submit" data-jumb-formId='newbill' class="btn jumbSubmit btn-primary">Save</button>
+										    <button type="button" class="btn" onclick="goHome();" >Cancel</button>
+										  </fieldset>
+								  	</c:when>
+								  	<c:otherwise>
+								  		<fieldset>
+										    <legend>Report a bill</legend>
+										    <label>Title</label>
+										    <input type="text" name="title" class="jumbRequiredField" 
+										    	data-field-name='Title' value="${param['title'] }" placeholder="Title ..."><br/>
+										    <label>Description</label>
+										    <textarea name="description" placeholder="Description ..."><c:if test="${not empty param['description'] }">${param['description'] }</c:if></textarea><br/>
+										    <label>Cost</label>
+										    <input type="text" name="cost" class="jumbRequiredField jumbCheckForPositveFloat" 
+										    	data-field-name='Cost' value="${param['cost'] }" placeholder="0"><br/>
+										    <label>Select a Payer</label>
+										    <nobs:friendsMultiSelectTag compName="payer" compId="payer"
+										    	styleClass="jumbRequiredField" compField="Payer" multiSelect="false" /><br/>
+										    <label>Split Between <span class="label label-important">Include yourself if you where in contribution</span></label>
+										    <nobs:friendsMultiSelectTag compName="splitBetween" compId="splitBetween"
+										    	styleClass="jumbRequiredField" compField="Split Between" /><br/>
+										    <span class="label label-info">Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.</span><br/>
+										    <button type="submit" data-jumb-formId='newbill' class="btn jumbSubmit btn-primary">Save</button>
+										    <button type="button" class="btn" onclick="goHome();" >Cancel</button>
+										  </fieldset>
+								  	</c:otherwise>
+								  </c:choose>
+								  
 								</form>
 							</div>
 						</div>
